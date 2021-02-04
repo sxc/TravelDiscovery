@@ -96,7 +96,7 @@ struct PopularRestaurantsView: View {
     let restaurants: [Restaurant] = [
         .init(name: "Japan's Finest Tapas", imageName: "tapas"),
         .init(name: "Bar & Grill", imageName: "bar_grill"),
-        .init(name: "Bar & Grill", imageName: "bar_grill"),
+//        .init(name: "Bar & Grill", imageName: "bar_grill"),
         
     ]
     var body: some View {
@@ -161,8 +161,17 @@ struct PopularRestaurantsView: View {
     }
 }
 
+struct User: Hashable {
+    let name, imageName: String
+}
 
 struct TrendingCreatorsView: View {
+    
+    let users: [User] = [
+        .init(name: "Amy Adams", imageName: "amy"),
+        .init(name: "Billy", imageName: "billy"),
+        .init(name: "Sam Smith", imageName: "sam")
+    ]
     var body: some View {
         VStack {
             HStack {
@@ -175,13 +184,27 @@ struct TrendingCreatorsView: View {
             .padding(.top)
             
             ScrollView(.horizontal) {
-                HStack(spacing: 8.0) {
-                    ForEach(0..<15, id: \.self) { num in
+                HStack(alignment: .top, spacing: 12) {
+                    ForEach(users, id: \.self) { user in
                         VStack {
-                            Spacer()
-                                .frame(width: 50, height: 50)
-                                .background(Color.gray)
-                                .cornerRadius(.infinity)
+                            VStack {
+                                Image(user.imageName)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 60, height: 60)
+                                
+                                    .cornerRadius(60)
+                                Text(user.name)
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .multilineTextAlignment(.center)
+                                
+                                
+                            }
+                                
+                            .clipped()
+//                                .background(Color(.init(white: 0.9, alpha: 1)))
+                           
+//                                .cornerRadius(.infinity)
                                 .shadow(color: .gray, radius: 4, x: 0.0, y: 2)
                                 .padding(.bottom)
                     }
