@@ -13,32 +13,32 @@ struct DiscoverCategoriesView: View {
         .init(name: "Art", imageName: "paintpalette.fill"),
         .init(name: "Sport", imageName: "sportscourt.fill"),
         .init(name: "Live Events", imageName: "music.mic"),
-        .init(name: "Food", imageName: "music.mic"),
-        .init(name: "History", imageName: "music.mic"),
-        .init(name: "Live Events", imageName: "music.mic"),
-        .init(name: "Live Events", imageName: "music.mic"),
-        
-            
-        
+        .init(name: "Food", imageName: "tray.fill"),
+        .init(name: "History", imageName: "books.vertical.fill"),
     ]
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack(alignment: .top, spacing: 16) {
                 ForEach(categories, id: \.self) { category in
-                    VStack(spacing: 8) {
-                        Image(systemName: category.imageName)
-                            .font(.system(size: 20))
-                            .foregroundColor(Color(#colorLiteral(red: 0.987332046, green: 0.6559622288, blue: 0.0520754382, alpha: 1)))
-                            .frame(width: 64, height: 64)
-                            .background(Color.white)
-                            .cornerRadius(64)
-//                             .shadow(color: .gray, radius: 4, x: 0.0, y: 2)
-                        Text(category.name)
-                            .font(.system(size: 12, weight: .semibold))
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                    }.frame(width: 68)
+                    NavigationLink(
+                        destination: CategoryDetialsView(),
+                        label: {
+                            
+                            VStack(spacing: 8) {
+                                Image(systemName: category.imageName)
+                                    .font(.system(size: 20))
+                                    .foregroundColor(Color(#colorLiteral(red: 0.987332046, green: 0.6559622288, blue: 0.0520754382, alpha: 1)))
+                                    .frame(width: 64, height: 64)
+                                    .background(Color.white)
+                                    .cornerRadius(64)
+                                Text(category.name)
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
+                            }.frame(width: 68)
+                            
+                        })
                     
                 }
                 
@@ -48,11 +48,92 @@ struct DiscoverCategoriesView: View {
     }
 }
 
-struct DiscoverCategoriesView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color.orange
-            DiscoverCategoriesView()
+class CategoryDetailsViewModel: ObservableObject {
+    
+    @Published var isLoading = false
+    @Published var places = [Int]()
+    
+    init() {
+        // network code will happen here
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.isLoading = true
+            self.places = [1,2,3,4,5,6,7]
         }
     }
+}
+
+struct ActivityIndicatorView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIActivityIndicatorView {
+        let aiv = UIActivityIndicatorView(style: .large)
+        aiv.startAnimating()
+        aiv.color = .white
+        return aiv
+    }
+    
+    typealias UIViewType = UIActivityIndicatorView
+    
+    func updateUIView(_ uiView: UIActivityIndicatorView, context: Context) {
+        
+    }
+}
+
+struct CategoryDetialsView: View {
+    
+    
+    // Where do i perform my network activity code?
+    
+    @ObservedObject var vm = CategoryDetailsViewModel()
+     
+    var body: some View {
+        
+        ZStack {
+            if vm.isLoading {
+                VStack {
+                    ActivityIndicatorView()
+                    Text("Loading")
+                        .foregroundColor(.white)
+                        .font(.system(size: 14, weight: .semibold))
+                }
+                .padding()
+                .background(Color.black)
+                
+                
+            } else {
+                ScrollView {
+                    ForEach(vm.places, id: \.self) { num in
+                        VStack(alignment: .leading, spacing: 0) {
+                            Image("art1")
+                                .resizable()
+                                .scaledToFill()
+                            Text("Demo")
+                                .font(.system(size: 12, weight: .semibold))
+                                .padding()
+                                
+                        }.asTile()
+                        .padding()
+                    }
+                    }
+                }
+                
+        }
+        .navigationBarTitle("Category", displayMode: .inline)
+    }
+}
+
+struct DiscoverCategoriesView_Previews: PreviewProvider {
+    static var previews: some View {
+        DiscoverView()
+        
+//        NavigationView {
+//            NavigationLink(
+//                destination: Text("Transition Screen"),
+//                label: {
+//                    Text("Link")
+//                })
+        }
+        
+//        ZStack {
+//            Color.orange
+//            DiscoverCategoriesView()
+//        }
 }
