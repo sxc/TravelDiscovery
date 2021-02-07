@@ -22,7 +22,7 @@ struct DiscoverCategoriesView: View {
             HStack(alignment: .top, spacing: 16) {
                 ForEach(categories, id: \.self) { category in
                     NavigationLink(
-                        destination: CategoryDetialsView(),
+                        destination: CategoryDetialsView(name: category.name),
                         label: {
                             
                             VStack(spacing: 8) {
@@ -52,45 +52,7 @@ struct DiscoverCategoriesView: View {
 
 
 
-class CategoryDetailsViewModel: ObservableObject {
-    
-    @Published var isLoading = true
-    @Published var places = [Place]()
-    @Published var errorMessage = ""
-    
-    init() {
-        // network code will happen here
-        
-        // real network cod
-        
-        guard let url = URL(string:
-                                "https://travel.letsbuildthatapp.com/travel_discovery/category?name=art") else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, resp, err) in
-            
-            // you want to check resp statusCodde and err
-            
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                
-                guard let data = data else { return }
-                do {
-                    
-                    self.places = try JSONDecoder().decode([Place].self, from: data)
-                } catch {
-                    print("Failed to decode JSON:", error)
-                    self.errorMessage = error.localizedDescription
-                    
-                }
-                
-                self.isLoading = false
-//                self.places = [1]
-            }
-            
-        }.resume()
-        
-        }
-    }
+
 
 
 
