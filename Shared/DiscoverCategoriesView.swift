@@ -49,9 +49,8 @@ struct DiscoverCategoriesView: View {
 }
 
 
-struct Place: Decodable, Hashable {
-    let  name, thumbnail: String
-}
+
+
 
 class CategoryDetailsViewModel: ObservableObject {
     
@@ -94,68 +93,9 @@ class CategoryDetailsViewModel: ObservableObject {
     }
 
 
-struct ActivityIndicatorView: UIViewRepresentable {
-    func makeUIView(context: Context) -> UIActivityIndicatorView {
-        let aiv = UIActivityIndicatorView(style: .large)
-        aiv.startAnimating()
-        aiv.color = .white
-        return aiv
-    }
-    
-    typealias UIViewType = UIActivityIndicatorView
-    
-    func updateUIView(_ uiView: UIActivityIndicatorView, context: Context) {
-        
-    }
-}
 
-struct CategoryDetialsView: View {
-    
-    
-    // Where do i perform my network activity code?
-    
-    @ObservedObject var vm = CategoryDetailsViewModel()
-     
-    var body: some View {
-        
-        ZStack {
-            if vm.isLoading {
-                VStack {
-                    ActivityIndicatorView()
-                    Text("Loading")
-                        .foregroundColor(.white)
-                        .font(.system(size: 14, weight: .semibold))
-                }
-                .padding()
-                .background(Color.black)
-                
-                
-            } else {
-                
-                
-                ZStack {
-                    Text(vm.errorMessage)
-                    ScrollView {
-                        ForEach(vm.places, id: \.self) { place in
-                            VStack(alignment: .leading, spacing: 0) {
-                                Image("art1")
-                                    .resizable()
-                                    .scaledToFill()
-                                Text(place.name)
-                                    .font(.system(size: 12, weight: .semibold))
-                                    .padding()
-                                    
-                            }.asTile()
-                            .padding()
-                        }
-                    }
-                }
-                }
-                
-        }
-        .navigationBarTitle("Category", displayMode: .inline)
-    }
-}
+
+
 
 struct DiscoverCategoriesView_Previews: PreviewProvider {
     static var previews: some View {
