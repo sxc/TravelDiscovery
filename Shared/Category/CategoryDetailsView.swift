@@ -19,10 +19,13 @@ class CategoryDetailsViewModel: ObservableObject {
     init(name: String) {
         // network code will happen here
         
-        // real network cod
+        // real network code
         
+        let urlString = "https://travel.letsbuildthatapp.com/travel_discovery/category?name=\(name.lowercased())"
+        .addingPercentEncoding(withAllowedCharacters:
+        .urlQueryAllowed) ?? ""
         guard let url = URL(string:
-                                "https://travel.letsbuildthatapp.com/travel_discovery/category?name=\(name.lowercased().addingPercentEncoding(withAllowedCharacters: urlQueryAllowed) ?? "")") else {
+                                urlString) else {
             self.isLoading = false
             return }
         
@@ -63,6 +66,7 @@ struct CategoryDetialsView: View {
     private let name: String
     @ObservedObject private var vm: CategoryDetailsViewModel
     init(name: String) {
+        print("Loaded CategoryDetails View and making a network request for \(name)")
         self.name = name
         self.vm = .init(name: name)
     }
