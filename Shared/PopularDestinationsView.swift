@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
+import MapKit
+
+
 
 struct PopularDestinationsView: View {
     
+
+    
     let destinations: [Destination] = [
-        .init(name: "Paris", country: "France", imageName: "eiffel_tower"),
-        .init(name: "Tokyo", country: "Japan", imageName: "japan"),
-        .init(name: "New York", country: "US", imageName: "new_york"),
+        .init(name: "Paris", country: "France", imageName: "eiffel_tower", latitude: 0, longitude: 0),
+        .init(name: "Tokyo", country: "Japan", imageName: "japan", latitude: 0, longitude: 0),
+        .init(name: "New York", country: "US", imageName: "new_york", latitude: 0, longitude: 0),
     ]
     
     var body: some View {
@@ -49,12 +54,26 @@ struct PopularDestinationDetailsView: View {
     
     let destination: Destination
     
+//    @State var region = MKCoordinateRegion(center: .init(latitude: 48.85956, longitude: 2.353235), span: .init(latitudeDelta: 0.1, longitudeDelta: 0.1))
+    
+    
+    @State var region: MKCoordinateRegion
+    
+    
+    init(destination: Destination) {
+        self.destination = destination
+        self._region = State(initialValue:
+                                MKCoordinateRegion(center: .init(latitude: destination.latitude, longitude: destination.latitude), span: .init(latitudeDelta: 0.1, longitudeDelta: 0.1))
+            )
+//        self.region = MKCoordinateRegion(center: .init(latitude: destination.latitude, longitude: destination.latitude), span: .init(latitudeDelta: 0.1, longitudeDelta: 0.1))
+    }
+    
     var body: some View {
         ScrollView {
             Image(destination.imageName)
                 .resizable()
                 .scaledToFill()
-                .frame(height: 200)
+                .frame(height: 250)
                 .clipped()
             
             VStack(alignment: .leading) {
@@ -71,14 +90,30 @@ struct PopularDestinationDetailsView: View {
                 
                 Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
                     .padding(.top, 4)
-//                    .lineLimit(100)
-//                    .frame(height: 1000)
+                    .font(.system(size: 14))
+                
+                
                 HStack{ Spacer() }
             }
             .padding(.horizontal)
             
+            
+            
+            HStack {
+                Text("Location")
+                    .font(.system(size: 18, weight: .semibold))
+                Spacer()
+                
+            }.padding(.horizontal)
+            
+            Map(coordinateRegion: $region)
+                .frame(height: 200)
+            
         }.navigationBarTitle(destination.name, displayMode: .inline)
     }
+    
+
+    
 }
 
 
@@ -118,7 +153,7 @@ struct PopularDestinationTile: View {
 struct PopularDestinationsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            PopularDestinationDetailsView(destination: .init(name: "Paris", country: "France", imageName: "eiffel_tower"))
+            PopularDestinationDetailsView(destination: .init(name: "Paris", country: "France", imageName: "eiffel_tower", latitude: 48.85956, longitude: 2.353235))
         }
         
         DiscoverView()
