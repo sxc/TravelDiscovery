@@ -121,7 +121,21 @@ struct PopularDestinationDetailsView: View {
 //                .frame(height: 300)
             
             Map(coordinateRegion: $region, annotationItems: isShowingAttractions ? attractions : []) { attraction  in
-                MapMarker(coordinate: .init(latitude: attraction.latitude, longitude: attraction.longitude), tint: .blue)
+//                MapMarker(coordinate: .init(latitude: attraction.latitude, longitude: attraction.longitude), tint: .blue)
+                MapAnnotation(coordinate: .init(latitude: attraction.latitude, longitude: attraction.longitude)) {
+                    VStack {
+                        Image(attraction.imageName)
+                            .resizable()
+                            .frame(width: 80, height: 60)
+                            .cornerRadius(4.0)
+                        Text(attraction.name)
+                            .font(.system(size: 12, weight: .semibold))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 4)
+                            .background(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .leading, endPoint: .trailing))
+                            .foregroundColor(.white)
+                    }.shadow(radius: 5)
+}
             }
             .frame(height: 300)
             
@@ -129,15 +143,15 @@ struct PopularDestinationDetailsView: View {
     }
     
     let attractions: [Attraction] = [
-        .init(name: "Eiffel Tower", latitude: 48.85956, longitude: 2.353235),
-        .init(name: "Champs-Elysees", latitude: 48.866867, longitude: 2.311780),
-        .init(name: "Louvre Museum", latitude: 48.860288, longitude: 2.337789)
+        .init(name: "Eiffel Tower", imageName: "eiffel_tower", latitude: 48.85956, longitude: 2.353235),
+        .init(name: "Champs-Elysees", imageName: "new_york", latitude: 48.866867, longitude: 2.311780),
+        .init(name: "Louvre Museum", imageName: "art2", latitude: 48.860288, longitude: 2.337789)
     ]
 }
 
 struct Attraction: Identifiable {
     let id = UUID().uuidString
-    let name: String
+    let name, imageName: String
     let latitude, longitude: Double
 }
 
