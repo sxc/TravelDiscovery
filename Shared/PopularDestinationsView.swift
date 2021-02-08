@@ -58,7 +58,7 @@ struct PopularDestinationDetailsView: View {
     
     
     @State var region: MKCoordinateRegion
-    
+    @State var isShowingAttractions = true
     
     init(destination: Destination) {
         self.destination = destination
@@ -104,18 +104,42 @@ struct PopularDestinationDetailsView: View {
                     .font(.system(size: 18, weight: .semibold))
                 Spacer()
                 
+                Button(action: { isShowingAttractions.toggle() }, label: {
+                    Text("\(isShowingAttractions ? "Hide" : "Show") Attractions")
+                        .font(.system(size: 14, weight: .semibold))
+                })
+                
+                Toggle("", isOn: $isShowingAttractions)
+                    .labelsHidden()
+                
             }.padding(.horizontal)
             
-            Map(coordinateRegion: $region)
-                .frame(height: 300)
+       
+            
+            
+//            Map(coordinateRegion: $region)
+//                .frame(height: 300)
+            
+            Map(coordinateRegion: $region, annotationItems: isShowingAttractions ? attractions : []) { attraction  in
+                MapMarker(coordinate: .init(latitude: attraction.latitude, longitude: attraction.longitude), tint: .blue)
+            }
+            .frame(height: 300)
             
         }.navigationBarTitle(destination.name, displayMode: .inline)
     }
     
-
-    
+    let attractions: [Attraction] = [
+        .init(name: "Eiffel Tower", latitude: 48.85956, longitude: 2.353235),
+        .init(name: "Champs-Elysees", latitude: 48.866867, longitude: 2.311780),
+        .init(name: "Louvre Museum", latitude: 48.860288, longitude: 2.337789)
+    ]
 }
 
+struct Attraction: Identifiable {
+    let id = UUID().uuidString
+    let name: String
+    let latitude, longitude: Double
+}
 
 struct PopularDestinationTile: View {
     
@@ -142,13 +166,10 @@ struct PopularDestinationTile: View {
                 .padding(.horizontal, 12)
                 .padding(.bottom, 8)
                 .foregroundColor(.gray)
-            
         }
         .asTile()
     }
 }
-
-
 
 struct PopularDestinationsView_Previews: PreviewProvider {
     static var previews: some View {
