@@ -74,7 +74,7 @@ struct PopularDestinationDetailsView: View {
     var body: some View {
         ScrollView {
             
-            DestinationHeaderContainer()
+            DestinationHeaderContainer(imageName: ["eiffel_tower", "art1", "art2"])
             // UIViewController()
             
 //            Image(destination.imageName)
