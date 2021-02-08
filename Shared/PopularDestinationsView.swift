@@ -123,18 +123,7 @@ struct PopularDestinationDetailsView: View {
             Map(coordinateRegion: $region, annotationItems: isShowingAttractions ? attractions : []) { attraction  in
 //                MapMarker(coordinate: .init(latitude: attraction.latitude, longitude: attraction.longitude), tint: .blue)
                 MapAnnotation(coordinate: .init(latitude: attraction.latitude, longitude: attraction.longitude)) {
-                    VStack {
-                        Image(attraction.imageName)
-                            .resizable()
-                            .frame(width: 80, height: 60)
-                            .cornerRadius(4.0)
-                        Text(attraction.name)
-                            .font(.system(size: 12, weight: .semibold))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 4)
-                            .background(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .leading, endPoint: .trailing))
-                            .foregroundColor(.white)
-                    }.shadow(radius: 5)
+            CustomMapAnnotation(attraction: attraction)
 }
             }
             .frame(height: 300)
@@ -153,6 +142,26 @@ struct Attraction: Identifiable {
     let id = UUID().uuidString
     let name, imageName: String
     let latitude, longitude: Double
+}
+
+
+struct CustomMapAnnotation: View {
+    let attraction: Attraction
+    
+    var body: some View {
+        VStack {
+            Image(attraction.imageName)
+                .resizable()
+                .frame(width: 80, height: 60)
+                .cornerRadius(4.0)
+            Text(attraction.name)
+                .font(.system(size: 12, weight: .semibold))
+                .padding(.horizontal, 6)
+                .padding(.vertical, 4)
+                .background(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .leading, endPoint: .trailing))
+                .foregroundColor(.white)
+        }.shadow(radius: 5)
+    }
 }
 
 struct PopularDestinationTile: View {
