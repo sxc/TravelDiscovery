@@ -14,6 +14,7 @@
 		3446FA4025CA348800886471 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3446FA2B25CA348500886471 /* DiscoverView.swift */; };
 		3446FA4125CA348800886471 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3446FA2C25CA348700886471 /* Assets.xcassets */; };
 		3446FA4225CA348800886471 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3446FA2C25CA348700886471 /* Assets.xcassets */; };
+		345CAC7325D11DB9004F7411 /* DestinationHeaderContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345CAC7225D11DB9004F7411 /* DestinationHeaderContainer.swift */; };
 		34AD5FC225CF7FD7008BA5A7 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 34AD5FC125CF7FD7008BA5A7 /* Kingfisher */; };
 		34AD5FC725CF8584008BA5A7 /* CategoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AD5FC625CF8584008BA5A7 /* CategoryDetailsView.swift */; };
 		34AD5FC825CF8584008BA5A7 /* CategoryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AD5FC625CF8584008BA5A7 /* CategoryDetailsView.swift */; };
@@ -50,6 +51,7 @@
 		3446FA3925CA348800886471 /* TravelDiscovery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelDiscovery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3446FA3B25CA348800886471 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3446FA3C25CA348800886471 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		345CAC7225D11DB9004F7411 /* DestinationHeaderContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationHeaderContainer.swift; sourceTree = "<group>"; };
 		34AD5FC625CF8584008BA5A7 /* CategoryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailsView.swift; sourceTree = "<group>"; };
 		34AD5FCD25CF8D46008BA5A7 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		34AD5FD225CF8DA6008BA5A7 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 		3446FA2925CA348500886471 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				345CAC7125D11D9D004F7411 /* Destination */,
 				34AD5FC525CF854F008BA5A7 /* Category */,
 				34BCDAFF25CBC9A9001986D5 /* Utils */,
 				34BCDAD125CBBD5F001986D5 /* TrendingCreatorsView.swift */,
@@ -143,6 +146,14 @@
 				3446FA3C25CA348800886471 /* macOS.entitlements */,
 			);
 			path = macOS;
+			sourceTree = "<group>";
+		};
+		345CAC7125D11D9D004F7411 /* Destination */ = {
+			isa = PBXGroup;
+			children = (
+				345CAC7225D11DB9004F7411 /* DestinationHeaderContainer.swift */,
+			);
+			path = Destination;
 			sourceTree = "<group>";
 		};
 		34AD5FC525CF854F008BA5A7 /* Category */ = {
@@ -284,6 +295,7 @@
 				34BCDAF925CBC47A001986D5 /* Category.swift in Sources */,
 				34BCDAC825CBBBC4001986D5 /* PopularDestinationsView.swift in Sources */,
 				34BCDACD25CBBD3B001986D5 /* PopularRestaurantsView.swift in Sources */,
+				345CAC7325D11DB9004F7411 /* DestinationHeaderContainer.swift in Sources */,
 				34AD5FD325CF8DA6008BA5A7 /* Place.swift in Sources */,
 				3446FA3F25CA348800886471 /* DiscoverView.swift in Sources */,
 				34BCDAE825CBC44B001986D5 /* Restaurant.swift in Sources */,

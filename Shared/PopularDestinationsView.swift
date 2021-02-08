@@ -68,13 +68,20 @@ struct PopularDestinationDetailsView: View {
 //        self.region = MKCoordinateRegion(center: .init(latitude: destination.latitude, longitude: destination.latitude), span: .init(latitudeDelta: 0.1, longitudeDelta: 0.1))
     }
     
+    // what do i mean by a container?
+
+    
     var body: some View {
         ScrollView {
-            Image(destination.imageName)
-                .resizable()
-                .scaledToFill()
+            
+            DestinationHeaderContainer()
+            // UIViewController()
+            
+//            Image(destination.imageName)
+//                .resizable()
+//                .scaledToFill()
                 .frame(height: 250)
-                .clipped()
+//                .clipped()
             
             VStack(alignment: .leading) {
                 Text(destination.name)
@@ -154,12 +161,22 @@ struct CustomMapAnnotation: View {
                 .resizable()
                 .frame(width: 80, height: 60)
                 .cornerRadius(4.0)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(Color(.init(white: 0, alpha: 0.5))))
             Text(attraction.name)
                 .font(.system(size: 12, weight: .semibold))
                 .padding(.horizontal, 6)
                 .padding(.vertical, 4)
                 .background(LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .leading, endPoint: .trailing))
                 .foregroundColor(.white)
+                
+//                .border(Color.black)
+                .cornerRadius(4)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4)
+                        .stroke(Color(.init(white: 0, alpha: 0.5))))
+            
         }.shadow(radius: 5)
     }
 }
