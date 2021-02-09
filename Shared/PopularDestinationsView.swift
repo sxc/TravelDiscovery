@@ -50,7 +50,46 @@ struct PopularDestinationsView: View {
     }
 }
 
+struct DestinationDetails: Decodable {
+    let description: String
+    let photos: [String]
+    
+}
+
+class DestinationDetailsViewModel: ObservableObject {
+    
+    @Published var isLoading = true
+    @Published var destinationDetails: DestinationDetails?
+    
+    init(name: String) {
+        // make a network call
+//        let name = "paris"
+        
+        let fixedUrlString = "https://travel.letsbuildthatapp.com/travel_discovery/destination?name=\(name.lowercased())".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        guard let url = URL(string: fixedUrlString) else { return }
+        URLSession.shared.dataTask(with: url) { (data, resp, err) in
+            // check error & response
+            
+            DispatchQueue.main.async {
+                guard let data = data else { return }
+    //            print(String(data: data, encoding: .utf8))
+                
+                do {
+                    self.destinationDetails = try JSONDecoder().decode(DestinationDetails.self, from: data)
+    //                print(details.photos)
+                } catch {
+                    print("Failed to decode JSON,", error)
+                }
+            }
+        }.resume()
+    }
+}
+
+
 struct PopularDestinationDetailsView: View {
+    
+    @ObservedObject var vm: DestinationDetailsViewModel
     
     let destination: Destination
     
@@ -61,11 +100,14 @@ struct PopularDestinationDetailsView: View {
     @State var isShowingAttractions = true
     
     init(destination: Destination) {
+        print("Hitting network unnecessarily")
         self.destination = destination
         self._region = State(initialValue:
                                 MKCoordinateRegion(center: .init(latitude: destination.latitude, longitude: destination.longitude), span: .init(latitudeDelta: 0.1, longitudeDelta: 0.1))
             )
 //        self.region = MKCoordinateRegion(center: .init(latitude: destination.latitude, longitude: destination.latitude), span: .init(latitudeDelta: 0.1, longitudeDelta: 0.1))
+        self.vm = .init(name: destination.name)
+//        destination.name
     }
     
     // what do i mean by a container?
@@ -78,7 +120,7 @@ struct PopularDestinationDetailsView: View {
     var body: some View {
         ScrollView {
             
-            DestinationHeaderContainer(imageName: imageUrlStrings)
+            DestinationHeaderContainer(imageName: vm.destinationDetails?.photos ?? [])
             // UIViewController()
             
 //            Image(destination.imageName)
@@ -99,7 +141,7 @@ struct PopularDestinationDetailsView: View {
                     }
                 }.padding(.top, 2)
                 
-                Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ")
+                Text(vm.destinationDetails?.description ?? "")
                     .padding(.top, 4)
                     .font(.system(size: 14))
                 
