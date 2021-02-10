@@ -43,6 +43,7 @@ struct RestaurantPhotosView: View {
     }
     
     @State var shouldShowFullscreenModal = false
+    @State var selectedPhotoIndex = 0
     
     var body: some View {
         GeometryReader { proxy in
@@ -64,7 +65,14 @@ struct RestaurantPhotosView: View {
                 .fullScreenCover(isPresented: $shouldShowFullscreenModal, content: {
                     ZStack(alignment: .topLeading) {
                         Color.black.ignoresSafeArea()
+                        
+                        // pageview
+                        
+                        RestaurantCaroselView(imageName: photoUrlStrings, selectedIndex: selectedPhotoIndex)
+                        
+                        
                         Button(action: {
+                            
                             shouldShowFullscreenModal.toggle()
                         }, label: {
                             Image(systemName: "xmark")
@@ -74,6 +82,7 @@ struct RestaurantPhotosView: View {
                         })
                     }
                 })
+                .opacity(shouldShowFullscreenModal ? 1 : 0)
             
             
             if mode == "grid" {
@@ -86,6 +95,8 @@ struct RestaurantPhotosView: View {
                                 ForEach(photoUrlStrings, id: \.self) { urlString in
                                     
                                     Button(action: {
+                                        self.selectedPhotoIndex = photoUrlStrings.firstIndex(of: urlString) ?? 0
+                                        
                                         shouldShowFullscreenModal.toggle()
                                     }, label: {
                                         KFImage(URL(string: urlString))

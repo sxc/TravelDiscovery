@@ -1,20 +1,23 @@
 //
-//  DestinationHeaderContainer.swift
-//  TravelDiscovery (iOS)
+//  RestaurantCaroselView.swift
+//  TravelDiscovery
 //
-//  Created by Xiaochun Shen on 2021/2/8.
+//  Created by Xiaochun Shen on 2021/2/10.
 //
 
 import SwiftUI
+import Kingfisher
 
-struct DestinationHeaderContainer: UIViewControllerRepresentable {
+struct RestaurantCaroselView: UIViewControllerRepresentable {
     
     let imageName: [String]
+    
+    let selectedIndex: Int
     
     
     func makeUIViewController(context: Context) -> UIViewController {
 
-        let pvc = CustomPageViewController(imageName: imageName)
+        let pvc = CaroselPageViewController(imageName: imageName, selectedIndex: selectedIndex)
         return pvc
     }
     
@@ -26,14 +29,14 @@ struct DestinationHeaderContainer: UIViewControllerRepresentable {
  
 }
 
-class CustomPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class CaroselPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
         allControllers.count
     }
     
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        0
+        self.selectedIndex
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -51,36 +54,28 @@ class CustomPageViewController: UIPageViewController, UIPageViewControllerDataSo
         return allControllers[index + 1]
     }
     
-    
-//    let firstVC = UIHostingController(rootView: Text("First View Controller"))
-//    let secondVC = UIHostingController(rootView: Text("Second"))
-//    let thirdVC = UIHostingController(rootView: Text("Third"))
-//
-//    lazy var allControllers: [UIViewController] = [firstVC, secondVC, thirdVC]
-    
-    
     var allControllers: [UIViewController] = []
     
+    var selectedIndex: Int
     
-    init(imageName: [String]) {
+    init(imageName: [String], selectedIndex: Int) {
+        
+        self.selectedIndex = selectedIndex
         
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.systemGray5
         UIPageControl.appearance().currentPageIndicatorTintColor = .purple
         
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-//        view.backgroundColor = .blue
-        
-        // pages that we swipe through
         
         allControllers = imageName.map({
             imageName in
             let hostingController = UIHostingController(rootView:
-                                                            
-                                                               
+                                                            ZStack {
+                                                                Color.black
                                                                 KFImage(URL(string: imageName))
                                                                 .resizable()
-                                                                .scaledToFill()
-                                                            
+                                                                .scaledToFit()
+                                                            }
                                                             
             )
             hostingController.view.clipsToBounds = true
@@ -88,10 +83,16 @@ class CustomPageViewController: UIPageViewController, UIPageViewControllerDataSo
             return hostingController
         })
         
-        if let first = allControllers.first {
-            setViewControllers([allControllers.first!], direction: .forward, animated: true, completion: nil)
+        if selectedIndex < allControllers.count {
+            setViewControllers([allControllers[selectedIndex]], direction: .forward, animated: true, completion: nil)
+            
         }
         
+      
+//        if let first = allControllers.first {
+//            setViewControllers([allControllers.first!], direction: .forward, animated: true, completion: nil)
+//        }
+//        
         
  
         
@@ -104,24 +105,4 @@ class CustomPageViewController: UIPageViewController, UIPageViewControllerDataSo
     }
 }
 
-import Kingfisher
 
-struct DestinationHeaderContainer_Previews: PreviewProvider {
-    
-    static let imageUrlStrings = [
-        "https://letsbuildthatapp-videos.s3-us-west-2.amazonaws.com/6982cc9d-3104-4a54-98d7-45ee5d117531", "https://letsbuildthatapp-videos.s3-us-west-2.amazonaws.com/b1642068-5624-41cf-83f1-3f6dff8c1702","https://letsbuildthatapp-videos.s3-us-west-2.amazonaws.com/2240d474-2237-4cd3-9919-562cd1bb439e"
-    ]
-    
-    static var previews: some View {
-       
-        
-        DestinationHeaderContainer(imageName: imageUrlStrings)
-            .frame(height: 300)
-        
-        NavigationView {
-            PopularDestinationDetailsView(destination: .init(name: "Paris", country: "France", imageName: "eiffel_tower", latitude: 48.85956, longitude: 2.353235))
-        }
-        
-       
-    }
-}
